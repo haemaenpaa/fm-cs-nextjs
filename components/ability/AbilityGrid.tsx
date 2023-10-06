@@ -27,13 +27,12 @@ function colorRange(count: number, start: Color, end: Color): Color[] {
 
 function genColors(): string[] {
   const ret: string[] = [];
-  const colors = colorRange(
-    10,
-    { r: 200, g: 0, b: 0 },
-    { r: 100, g: 32, b: 32 }
-  )
-    .concat(colorRange(11, { r: 0, g: 200, b: 200 }, { r: 0, g: 0, b: 200 }))
-    .concat(colorRange(10, { r: 0, g: 0, b: 180 }, { r: 160, g: 160, b: 0 }));
+  const colors = colorRange(5, { r: 200, g: 0, b: 0 }, { r: 180, g: 50, b: 60 })
+    .concat(colorRange(5, { r: 255, g: 61, b: 69 }, { r: 200, g: 64, b: 0 }))
+    .concat(colorRange(5, { r: 0, g: 0, b: 0 }, { r: 160, g: 160, b: 0 }))
+    .concat(colorRange(5, { r: 180, g: 180, b: 0 }, { r: 160, g: 10, b: 145 }))
+    .concat(colorRange(5, { r: 180, g: 0, b: 160 }, { r: 160, g: 160, b: 0 }))
+    .concat(colorRange(6, { r: 180, g: 180, b: 0 }, { r: 0, g: 200, b: 0 }));
   return colors.map(
     (c) => `rgb(${Math.round(c.r)},${Math.round(c.g)},${Math.round(c.b)})`
   );
