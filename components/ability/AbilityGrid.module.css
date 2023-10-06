@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: max-content max-content max-content;
+  grid-template-areas: "br dex vit" "int cun res" "pre man com";
+}
+
+.br {
+  grid-area: br;
+}
+.vit {
+  grid-area: vit;
+}
+.dex {
+  grid-area: dex;
+}
+.int {
+  grid-area: int;
+}
+.cun {
+  grid-area: cun;
+}
+.res {
+  grid-area: res;
+}
+.pre {
+  grid-area: pre;
+}
+.man {
+  grid-area: man;
+}
+.com {
+  grid-area: com;
+}

@@ -1,0 +1,31 @@
+.container {
+  width: calc(100%-2em);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+  grid-template-areas: "heading" "score" "modifier";
+  align-items: center;
+  justify-items: center;
+  border-style: double;
+  border-radius: 20px;
+  border-width: 6px;
+  padding: 1em;
+  margin: 0.5em;
+  border-color: black;
+}
+
+.heading {
+  font-weight: bold;
+  grid-area: heading;
+}
+
+.score {
+  grid-area: score;
+  font-size: large;
+  cursor: pointer;
+}
+
+.modifier {
+  grid-area: modifier;
+  font-style: italic;
+}
