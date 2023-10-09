@@ -11,17 +11,13 @@ export default function AbilityScore(props: {
   const { heading, score, changed } = props;
   const [current, setCurrent] = useState(score);
   const modifier = useMemo(() => abilityModifier(current), [current]);
-  const intermediate = useCallback(
-    (intermediate: number) => setCurrent(intermediate),
-    []
-  );
 
   return (
     <div className={styles.container}>
       <p className={styles.heading}>{heading}</p>
       <EditableNumber
         value={score}
-        onChange={intermediate}
+        onChange={setCurrent}
         onSubmit={changed}
         className={styles.score}
         minimum={0}
