@@ -1,5 +1,7 @@
 .container {
   width: calc(100%-2em);
+  max-width: 6em;
+  min-width: 3em;
   aspect-ratio: 1;
   display: grid;
   grid-template-rows: max-content 1fr max-content;

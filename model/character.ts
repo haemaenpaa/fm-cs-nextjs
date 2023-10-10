@@ -24,6 +24,22 @@ export interface AbilityNumberStruct {
   com: number;
 }
 
+export interface DefaultSkills {
+  anh: number;
+  ath: number;
+  dec: number;
+  emp: number;
+  inv: number;
+  lea: number;
+  med: number;
+  occ: number;
+  perc: number;
+  pers: number;
+  sub: number;
+  ste: number;
+  sur: number;
+}
+
 /**
  * A single character model, that encapsulates everything contained in a character sheet.
  *
@@ -37,21 +53,7 @@ export default interface Character {
   /**
    * The default skills, always displayed on the character sheet.
    */
-  defaultSkills: {
-    anh: number;
-    ath: number;
-    dec: number;
-    emp: number;
-    inv: number;
-    lea: number;
-    med: number;
-    occ: number;
-    perc: number;
-    pers: number;
-    sub: number;
-    ste: number;
-    sur: number;
-  };
+  defaultSkills: DefaultSkills;
 
   /**
    * Current hit point total.

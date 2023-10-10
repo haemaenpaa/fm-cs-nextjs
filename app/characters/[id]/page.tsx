@@ -1,8 +1,9 @@
 "use client";
 import AbilityGrid from "@/components/ability/AbilityGrid";
+import SkillGrid from "@/components/skill/SkillGrid";
 import Character from "@/model/character";
-import { reduceCharacter } from "@/model/reducer/character-reducer";
-import Head from "next/head";
+import { AbilitiesContext } from "@/model/state/character-context";
+import { reduceCharacter } from "@/model/state/character-reducer";
 import { useParams } from "next/navigation";
 import { useEffect, useReducer } from "react";
 
@@ -30,13 +31,19 @@ export default function CharacterSheet() {
     );
   }
   return (
-    <>
+    <AbilitiesContext character={character}>
       <section>
         <p>{character.name}</p>
-        <div style={{ width: "30vw" }}>
+        <div style={{ width: "40vw" }}>
           <AbilityGrid abilities={character.abilities} dispatch={dispatch} />
         </div>
+        <div style={{ width: "40vw" }}>
+          <SkillGrid
+            defaultSkills={character.defaultSkills}
+            dispatch={dispatch}
+          ></SkillGrid>
+        </div>
       </section>
-    </>
+    </AbilitiesContext>
   );
 }

@@ -1,5 +1,5 @@
 import { abilityModifier } from "@/model/character-abilities";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import EditableNumber from "../common/EditableNumber";
 import styles from "./AbilityScore.module.css";
 

@@ -1,5 +1,5 @@
 import CharacterAbilities from "@/model/character-abilities";
-import { CharacterAction } from "@/model/reducer/character-reducer";
+import { CharacterAction } from "@/model/state/character-reducer";
 import { useMemo } from "react";
 import styles from "./AbilityGrid.module.css";
 import AbilityScore from "./AbilityScore";
