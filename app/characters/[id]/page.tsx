@@ -35,7 +35,24 @@ export default function CharacterSheet() {
       <section>
         <p>{character.name}</p>
         <div style={{ width: "40vw" }}>
-          <AbilityGrid abilities={character.abilities} dispatch={dispatch} />
+          <AbilityGrid
+            abilities={character.abilities}
+            onChange={(specifier, value) => {
+              const oldValue = (character.abilities as any)[specifier];
+              fetch(`/api/characters/${params.id}/ability/${specifier}`, {
+                method: "PUT",
+                body: `${value}`,
+              }).catch((e) => {
+                console.error("Failed to update character", e);
+                dispatch({
+                  type: "ability",
+                  specifier,
+                  numericValue: oldValue,
+                });
+              });
+              dispatch({ type: "ability", specifier, numericValue: value });
+            }}
+          />
         </div>
         <div style={{ width: "40vw" }}>
           <SkillGrid

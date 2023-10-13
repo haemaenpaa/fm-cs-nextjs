@@ -42,14 +42,14 @@ const colors = genColors();
 
 export default function AbilityGrid(props: {
   abilities: CharacterAbilities;
-  dispatch: (action: CharacterAction) => void;
+  onChange: (skill: string, value: number) => void;
 }) {
-  const { abilities, dispatch } = props;
+  const { abilities, onChange } = props;
   const handlers: { [key: string]: (v: number) => void } = useMemo(() => {
     const dispatchChange = (specifier: string, value: number) => {
       console.log("Update " + specifier + "=" + value);
       if (!Number.isNaN(value)) {
-        dispatch({ type: "ability", specifier, numericValue: value });
+        onChange(specifier, value);
       }
     };
     return {
@@ -63,7 +63,7 @@ export default function AbilityGrid(props: {
       man: (v: number) => dispatchChange("man", v),
       com: (v: number) => dispatchChange("com", v),
     };
-  }, [dispatch]);
+  }, [onChange]);
   return (
     <div className={styles.container}>
       {Object.keys(abilities).map((key) => (
