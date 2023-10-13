@@ -55,9 +55,9 @@ const defaultKeys = [
 export default function SkillGrid(props: {
   defaultSkills: DefaultSkills;
   otherSkills?: Skill[];
-  dispatch: (a: CharacterAction) => void;
+  onChange: (skill: string, value: number) => void;
 }) {
-  const { defaultSkills, dispatch } = props;
+  const { defaultSkills, onChange } = props;
   const otherSkills = props.otherSkills || [];
 
   return (
@@ -67,9 +67,15 @@ export default function SkillGrid(props: {
           name={defaultSkillNames[key]}
           value={(defaultSkills as any)[key]}
           abilities={defaultSkillAbilities[key]}
-          onChange={(n) =>
-            dispatch({ type: "skill", specifier: key, numericValue: n })
-          }
+          onChange={(n) => onChange(key, n)}
+        ></SkillComponent>
+      ))}
+      {otherSkills.map((sk) => (
+        <SkillComponent
+          name={sk.name || ""}
+          value={sk.rank}
+          abilities={sk.defaultAbilities}
+          onChange={(n) => onChange(sk.identifier, n)}
         ></SkillComponent>
       ))}
     </div>

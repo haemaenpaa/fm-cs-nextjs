@@ -40,7 +40,9 @@ export default function CharacterSheet() {
         <div style={{ width: "40vw" }}>
           <SkillGrid
             defaultSkills={character.defaultSkills}
-            dispatch={dispatch}
+            onChange={(skill, value) =>
+              dispatch({ type: "skill", specifier: skill, numericValue: value })
+            }
           ></SkillGrid>
         </div>
       </section>
