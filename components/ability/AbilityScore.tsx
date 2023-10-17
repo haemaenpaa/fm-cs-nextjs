@@ -1,9 +1,9 @@
 import { abilityModifier } from "@/model/character-abilities";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import EditableNumber from "../common/EditableNumber";
 import styles from "./AbilityScore.module.css";
 
-export default function AbilityScore(props: {
+const AbilityScore = memo(function AbilityScore(props: {
   heading: string;
   score: number;
   changed: (v: number) => void;
@@ -28,4 +28,5 @@ export default function AbilityScore(props: {
       </p>
     </div>
   );
-}
+});
+export default AbilityScore;

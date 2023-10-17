@@ -5,7 +5,7 @@ import Character from "@/model/character";
 import { AbilitiesContext } from "@/model/state/character-context";
 import { reduceCharacter } from "@/model/state/character-reducer";
 import { useParams } from "next/navigation";
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 
 export default function CharacterSheet() {
   const params = useParams();
@@ -13,13 +13,31 @@ export default function CharacterSheet() {
     reduceCharacter,
     undefined as any as Character
   );
+  const onAbilityChange = useCallback(
+    (specifier: string, value: number) => {
+      const oldValue = (character.abilities as any)[specifier];
+      fetch(`/api/characters/${params.id}/ability/${specifier}`, {
+        method: "PUT",
+        body: `${value}`,
+      }).catch((e) => {
+        console.error("Failed to update character", e);
+        dispatch({
+          type: "ability",
+          specifier,
+          numericValue: oldValue,
+        });
+      });
+      dispatch({ type: "ability", specifier, numericValue: value });
+    },
+    [dispatch, character]
+  );
   useEffect(() => {
     fetch(`/api/characters/${params.id}`)
       .then((res) => res.json())
       .then((c) =>
         dispatch({ type: "useFetched", specifier: "", override: c })
       );
-  }, [params.id]);
+  }, []);
   useEffect(() => {
     document.title = character ? character.name : "Loading character...";
   }, [character]);
@@ -37,21 +55,7 @@ export default function CharacterSheet() {
         <div style={{ width: "40vw" }}>
           <AbilityGrid
             abilities={character.abilities}
-            onChange={(specifier, value) => {
-              const oldValue = (character.abilities as any)[specifier];
-              fetch(`/api/characters/${params.id}/ability/${specifier}`, {
-                method: "PUT",
-                body: `${value}`,
-              }).catch((e) => {
-                console.error("Failed to update character", e);
-                dispatch({
-                  type: "ability",
-                  specifier,
-                  numericValue: oldValue,
-                });
-              });
-              dispatch({ type: "ability", specifier, numericValue: value });
-            }}
+            onChange={onAbilityChange}
           />
         </div>
         <div style={{ width: "40vw" }}>
