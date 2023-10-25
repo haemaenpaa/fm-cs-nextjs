@@ -1,3 +1,4 @@
+import "server-only";
 import {
   AoSelectionDto,
   InventoryContainerDto,
@@ -282,6 +283,6 @@ function convertResistances(dto: CharacterDto, builder: CharacterBuilder) {
 
 function convertAttacks(dto: CharacterDto, builder: CharacterBuilder) {
   if (dto.attacks) {
-    builder.attacks = dto.attacks.map(convertAttackDto);
+    builder.attacks = dto.attacks?.map(convertAttackDto) || [];
   }
 }

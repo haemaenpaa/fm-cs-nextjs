@@ -1,10 +1,17 @@
-import fetchCharacter from "@/data-access/character";
-import { NextResponse } from "next/server";
+import fetchCharacter, { createCharacter } from "@/data-access/character";
+import {
+  AppRouteHandlerFn,
+  AppRouteHandlerFnContext,
+  withApiAuthRequired,
+} from "@auth0/nextjs-auth0";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+export const GET = withApiAuthRequired(async function GET(
+  _: NextRequest,
+  ctx: AppRouteHandlerFnContext
 ) {
-  const character = await fetchCharacter(Number.parseInt(params.id));
+  const character = await fetchCharacter(
+    Number.parseInt(ctx.params.id as string)
+  );
   return NextResponse.json(character);
-}
+} as AppRouteHandlerFn);

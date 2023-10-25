@@ -1,3 +1,5 @@
+import { authorizationHeaders } from "./auth-header";
+
 export default async function updateAbility(
   characterId: number,
   ability: string,
@@ -5,7 +7,10 @@ export default async function updateAbility(
 ) {
   const putArguments = {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      ...(await authorizationHeaders()),
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       [ability]: value,
     }),
