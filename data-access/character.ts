@@ -3,11 +3,9 @@ import {
   convertCharacterDto,
   convertCharacterModel,
 } from "@/model/mapper/character-mapper";
-import { getAccessToken } from "@auth0/nextjs-auth0";
 import { authorizationHeaders } from "./auth-header";
 
 export default async function fetchCharacter(id: number): Promise<Character> {
-  const { accessToken } = await getAccessToken();
   return fetch(process.env.BACKEND_URL + `/character/${id}`, {
     headers: await authorizationHeaders(),
     next: { revalidate: 12 },
@@ -19,7 +17,6 @@ export default async function fetchCharacter(id: number): Promise<Character> {
 export async function createCharacter(
   character: Character
 ): Promise<Character> {
-  const { accessToken } = await getAccessToken();
   return fetch(process.env.BACKEND_URL + `/character`, {
     method: "POST",
     body: JSON.stringify(convertCharacterModel(character)),

@@ -19,5 +19,7 @@ export default withPageAuthRequired(
       </ul>
     );
   },
-  { returnTo: "/characters" }
+  {
+    returnTo: "/characters",
+  }
 );

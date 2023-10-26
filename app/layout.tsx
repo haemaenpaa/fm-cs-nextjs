@@ -17,13 +17,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await fetchCurrentUser();
   return (
     <html lang="en">
       <UserProvider>
         <body className={inter.className}>
           <section>
-            <UserBox user={user!}></UserBox>
+            <UserBox></UserBox>
           </section>
           <section>{children}</section>
         </body>

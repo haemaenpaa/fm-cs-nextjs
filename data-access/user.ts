@@ -10,8 +10,18 @@ export default async function fetchCurrentUser(): Promise<User | undefined> {
   if (!session) {
     return undefined;
   }
+
+  const headers = await authorizationHeaders().catch((e) => {
+    console.warn(e);
+    return undefined;
+  });
+
+  if (!headers) {
+    return undefined;
+  }
+
   return fetch(process.env.BACKEND_URL + `/user`, {
-    headers: await authorizationHeaders(),
+    headers,
     next: { tags: [session?.user.sub] },
   })
     .then(
