@@ -23,7 +23,9 @@ export function reduceCharacter(
         },
       };
     case "skill":
+      console.log("Skill action", action);
       if (action.specifier in current.defaultSkills) {
+        console.log(`Custom skill ${action.specifier}`);
         return {
           ...current,
           defaultSkills: {
@@ -32,24 +34,14 @@ export function reduceCharacter(
           },
         };
       } else {
-        if (action.specifier in current.defaultSkills) {
-          return {
-            ...current,
-            defaultSkills: {
-              ...current.defaultSkills,
-              [action.specifier]: action.numericValue,
-            },
-          };
-        } else {
-          return {
-            ...current,
-            customSkills: current.customSkills.map((s: Skill) =>
-              s.identifier === action.specifier
-                ? ({ ...s, rank: action.numericValue } as Skill)
-                : s
-            ),
-          };
-        }
+        return {
+          ...current,
+          customSkills: current.customSkills.map((s: Skill) =>
+            s.identifier === action.specifier
+              ? ({ ...s, rank: action.numericValue } as Skill)
+              : s
+          ),
+        };
       }
     default:
       console.error(`Action type ${action.type} not recognized`);

@@ -40,6 +40,24 @@ export interface DefaultSkills {
   sur: number;
 }
 
+export type DefaultSkillKey = keyof DefaultSkills;
+
+export const defaultSkillKeys: DefaultSkillKey[] = [
+  "anh",
+  "ath",
+  "dec",
+  "emp",
+  "inv",
+  "lea",
+  "med",
+  "occ",
+  "perc",
+  "pers",
+  "sub",
+  "ste",
+  "sur",
+];
+
 /**
  * A single character model, that encapsulates everything contained in a character sheet.
  *
@@ -83,4 +101,16 @@ export default interface Character {
   inventory: InventoryContainer[];
   biography: CharacterBiography;
   resources: CharacterResource[];
+}
+
+export function getSkill(character: Character, id: string): Skill | undefined {
+  if (id in character.defaultSkills) {
+    const value = (character.defaultSkills as any)[id];
+    return {
+      identifier: id,
+      rank: value,
+      defaultAbilities: [],
+    };
+  }
+  return character.customSkills.find((s) => s.identifier === id);
 }

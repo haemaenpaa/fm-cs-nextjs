@@ -1,8 +1,9 @@
-import { DefaultSkills } from "@/model/character";
-import { CharacterAction } from "@/model/state/character-reducer";
+"use client";
+import { DefaultSkills, defaultSkillKeys } from "@/model/character";
 import { Skill } from "@/model/skill";
 import SkillComponent from "./SkillComponent";
 import styles from "./SkillGrid.module.css";
+import { useProficiency } from "@/model/state/character-context";
 
 const defaultSkillNames: any = {
   anh: "Animal Handling",
@@ -36,22 +37,6 @@ const defaultSkillAbilities: any = {
   sur: ["int", "cun"],
 };
 
-const defaultKeys = [
-  "anh",
-  "ath",
-  "dec",
-  "emp",
-  "inv",
-  "lea",
-  "med",
-  "occ",
-  "perc",
-  "pers",
-  "sub",
-  "ste",
-  "sur",
-];
-
 export default function SkillGrid(props: {
   defaultSkills: DefaultSkills;
   otherSkills?: Skill[];
@@ -59,22 +44,27 @@ export default function SkillGrid(props: {
 }) {
   const { defaultSkills, onChange } = props;
   const otherSkills = props.otherSkills || [];
+  const proficiency = useProficiency();
 
   return (
     <div className={styles.grid}>
-      {defaultKeys.map((key) => (
+      {defaultSkillKeys.map((key) => (
         <SkillComponent
+          key={key}
           name={defaultSkillNames[key]}
-          value={(defaultSkills as any)[key]}
+          value={defaultSkills[key]}
           abilities={defaultSkillAbilities[key]}
+          proficiency={proficiency}
           onChange={(n) => onChange(key, n)}
         ></SkillComponent>
       ))}
       {otherSkills.map((sk) => (
         <SkillComponent
+          key={sk.identifier}
           name={sk.name || ""}
           value={sk.rank}
           abilities={sk.defaultAbilities}
+          proficiency={proficiency}
           onChange={(n) => onChange(sk.identifier, n)}
         ></SkillComponent>
       ))}
