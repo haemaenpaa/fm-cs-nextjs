@@ -1,4 +1,5 @@
 import { authorizationHeaders } from "./auth-header";
+import { jsonOrError } from "./fetch-error";
 
 export default async function updateAbility(
   characterId: number,
@@ -19,5 +20,5 @@ export default async function updateAbility(
   return fetch(
     `${process.env.BACKEND_URL}/character/${characterId}/abilities`,
     putArguments
-  );
+  ).then(jsonOrError);
 }
