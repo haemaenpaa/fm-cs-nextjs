@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 
 export default function RowOfDots(props: {
@@ -6,9 +7,11 @@ export default function RowOfDots(props: {
   min: number;
   onChange: (v: number) => void;
   className?: string;
+  iconStyle?: "hexagon" | "star" | "jagged-star";
 }) {
-  const { current, max, min, onChange, className } = props;
+  const { current, max, min, onChange, className, iconStyle } = props;
   const [hovered, setHovered] = useState(current);
+  const iconName = iconStyle || "hexagon";
 
   const checkedIdx = [...Array(current).keys()];
   const hoveredIdx =
@@ -20,23 +23,42 @@ export default function RowOfDots(props: {
   return (
     <div onMouseLeave={() => setHovered(current)} className={className || ""}>
       {checkedIdx.map((n) => (
-        <button onClick={() => onChange(n)}>◆</button>
+        <button key={n} onClick={() => onChange(Math.max(n, min))}>
+          <Image
+            src={`/${iconName}-fill.png`}
+            width={20}
+            height={20}
+            alt="◆"
+          ></Image>
+        </button>
       ))}
       {hoveredIdx.map((n) => (
         <button
+          key={n}
           onClick={() => onChange(n + 1)}
           onMouseEnter={() => setHovered(n + 1)}
           onMouseLeave={() => setHovered(current)}
         >
-          ◈
+          <Image
+            src={`/${iconName}-hilight.png`}
+            width={20}
+            height={20}
+            alt="◆"
+          ></Image>
         </button>
       ))}
       {uncheckedIdx.map((n) => (
         <button
+          key={n}
           onClick={() => onChange(n + 1)}
           onMouseEnter={() => setHovered(n + 1)}
         >
-          ◇
+          <Image
+            src={`/${iconName}.png`}
+            width={20}
+            height={20}
+            alt="◆"
+          ></Image>
         </button>
       ))}
     </div>
