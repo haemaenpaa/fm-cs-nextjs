@@ -7,11 +7,11 @@ export default function RowOfDots(props: {
   min: number;
   onChange: (v: number) => void;
   className?: string;
-  iconStyle?: "hexagon" | "star" | "jagged-star";
+  iconStyle?: "heptagon" | "star" | "jagged-star";
 }) {
   const { current, max, min, onChange, className, iconStyle } = props;
   const [hovered, setHovered] = useState(current);
-  const iconName = iconStyle || "hexagon";
+  const iconName = iconStyle || "heptagon";
 
   const checkedIdx = [...Array(current).keys()];
   const hoveredIdx =
