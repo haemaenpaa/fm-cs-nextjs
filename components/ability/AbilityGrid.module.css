@@ -1,9 +1,15 @@
 .container {
-  width: 100%;
+  width: min-content;
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: max-content max-content max-content;
   grid-template-areas: "br dex vit" "int cun res" "pre man com";
+  align-content: center;
+  justify-self: center;
+  border-style: solid;
+  border-width: 0.25em;
+  border-radius: 1em;
+  border-color: black;
 }
 
 .br {

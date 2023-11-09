@@ -13,9 +13,26 @@
 
 .header {
   grid-area: header;
-  font-weight: bold;
+  display: flex;
   width: 100%;
   text-align: center;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.skillName {
+  width: 100%;
+  font-weight: bold;
+  align-self: center;
+}
+
+.header > button {
+  justify-self: end;
+  color: red;
+  filter: invert(11%) sepia(64%) saturate(5557%) hue-rotate(355deg)
+    brightness(95%) contrast(115%);
+  padding: 0.5em;
+  align-self: center;
 }
 
 .rank {
@@ -23,7 +40,7 @@
   grid-area: rank;
   width: 100%;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   border-style: solid none;
   border-width: 2px;
   border-color: inherit;

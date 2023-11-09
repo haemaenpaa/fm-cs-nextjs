@@ -6,17 +6,14 @@ import {
   useState,
 } from "react";
 
-export default function EditableNumber(props: {
-  value: number;
-  onSubmit?: (newValue: number) => void;
-  onChange?: (newValue: number) => void;
+export default function EditableText(props: {
+  value: string;
+  onSubmit?: (newValue: string) => void;
+  onChange?: (newValue: string) => void;
   className?: string;
   width?: number;
-  minimum?: number;
-  maximum?: number;
 }) {
-  const { value, onSubmit, onChange, className, width, minimum, maximum } =
-    props;
+  const { value, onSubmit, onChange, className, width } = props;
   const [current, setCurrent] = useState(value);
   const [editing, setEditing] = useState(false);
   const ref = useRef();
@@ -28,19 +25,13 @@ export default function EditableNumber(props: {
   }, [onSubmit, setEditing, current, value]);
   const updateValue = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
-      const newValue = Number.parseInt(ev.target.value);
-      if (
-        (minimum !== undefined && newValue < minimum) ||
-        (maximum !== undefined && newValue > maximum)
-      ) {
-        return;
-      }
-      setCurrent(Math.max(newValue));
+      const newValue = ev.target.value;
+      setCurrent(newValue);
       if (onChange && !Number.isNaN(newValue)) {
         onChange(newValue);
       }
     },
-    [minimum, maximum, onChange]
+    [onChange]
   );
   const onKeyDown = useCallback(
     (ev: KeyboardEvent<HTMLInputElement>) => {
@@ -62,7 +53,7 @@ export default function EditableNumber(props: {
       <input
         autoFocus
         className={className}
-        type="number"
+        type="text"
         value={current}
         onChange={updateValue}
         onKeyDown={onKeyDown}

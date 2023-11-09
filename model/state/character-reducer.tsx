@@ -2,10 +2,12 @@ import Character from "../character";
 import { Skill } from "../skill";
 
 export interface CharacterAction {
-  type: "useFetched" | "ability" | "skill";
-  specifier: string;
-  numericValue?: number;
-  override?: Character;
+  type: "useFetched" | "ability" | "skill" | "addSkill" | "removeSkill"; //Type of the action
+  specifier: string; //Specific target of the action, e.g. skill ID
+  numericValue?: number; //Number value of the action
+  stringValue?: string;
+  stringList?: string[];
+  override?: Character; //Used to set the new character.
 }
 export function reduceCharacter(
   current: Character,
@@ -23,9 +25,7 @@ export function reduceCharacter(
         },
       };
     case "skill":
-      console.log("Skill action", action);
       if (action.specifier in current.defaultSkills) {
-        console.log(`Custom skill ${action.specifier}`);
         return {
           ...current,
           defaultSkills: {
@@ -36,13 +36,40 @@ export function reduceCharacter(
       } else {
         return {
           ...current,
-          customSkills: current.customSkills.map((s: Skill) =>
-            s.identifier === action.specifier
-              ? ({ ...s, rank: action.numericValue } as Skill)
-              : s
+          customSkills: current.customSkills.map((skl: Skill) =>
+            skl.identifier === action.specifier
+              ? ({
+                  ...skl,
+                  name: action.stringValue || skl.name,
+                  rank: action.numericValue,
+                  defaultAbilities: action.stringList
+                    ? action.stringList
+                    : skl.defaultAbilities,
+                } as Skill)
+              : skl
           ),
         };
       }
+    case "addSkill":
+      return {
+        ...current,
+        customSkills: [
+          ...current.customSkills,
+          {
+            identifier: action.specifier,
+            name: action.stringValue,
+            rank: action.numericValue || 0,
+            defaultAbilities: action.stringList || [],
+          },
+        ],
+      };
+    case "removeSkill":
+      return {
+        ...current,
+        customSkills: current.customSkills.filter(
+          (s) => s.identifier !== action.specifier
+        ),
+      };
     default:
       console.error(`Action type ${action.type} not recognized`);
       return current;

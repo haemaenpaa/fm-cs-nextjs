@@ -4,6 +4,7 @@ import { Skill } from "@/model/skill";
 import SkillComponent from "./SkillComponent";
 import styles from "./SkillGrid.module.css";
 import { useProficiency } from "@/model/state/character-context";
+import { useState } from "react";
 
 const defaultSkillNames: any = {
   anh: "Animal Handling",
@@ -40,11 +41,20 @@ const defaultSkillAbilities: any = {
 export default function SkillGrid(props: {
   defaultSkills: DefaultSkills;
   otherSkills?: Skill[];
-  onChange: (skill: string, value: number) => void;
+  onChange: (
+    skill: string,
+    value: number,
+    abilities?: string[],
+    name?: string
+  ) => void;
+  onAdd: (name: string) => void;
+  onRemove: (identifier: string) => void;
 }) {
-  const { defaultSkills, onChange } = props;
+  const { defaultSkills, onChange, onAdd, onRemove } = props;
   const otherSkills = props.otherSkills || [];
   const proficiency = useProficiency();
+  const [adding, setAdding] = useState(false);
+  const [newSkill, setNewSkill] = useState("");
 
   return (
     <div className={styles.grid}>
@@ -60,14 +70,37 @@ export default function SkillGrid(props: {
       ))}
       {otherSkills.map((sk) => (
         <SkillComponent
+          editable
           key={sk.identifier}
           name={sk.name || ""}
           value={sk.rank}
           abilities={sk.defaultAbilities}
           proficiency={proficiency}
-          onChange={(n) => onChange(sk.identifier, n)}
+          onChange={(n, s) => onChange(sk.identifier, n, s)}
+          onDelete={() => onRemove(sk.identifier)}
+          onRename={(a) =>
+            onChange(sk.identifier, sk.rank, sk.defaultAbilities, a)
+          }
         ></SkillComponent>
       ))}
+      {adding ? (
+        <input
+          type="text"
+          placeholder="Skill name"
+          value={newSkill}
+          autoFocus
+          onChange={(ev) => setNewSkill(ev.target.value)}
+          onBlur={() => {
+            if (newSkill) {
+              onAdd(newSkill);
+            }
+            setNewSkill("");
+            setAdding(false);
+          }}
+        ></input>
+      ) : (
+        <button onClick={() => setAdding(true)}>Add skill</button>
+      )}
     </div>
   );
 }

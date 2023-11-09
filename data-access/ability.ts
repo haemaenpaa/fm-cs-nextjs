@@ -1,5 +1,7 @@
+import { revalidateTag } from "next/cache";
 import { authorizationHeaders } from "./auth-header";
 import { jsonOrError } from "./fetch-error";
+import { characterRevalidator } from "./characterRevalidator";
 
 export default async function updateAbility(
   characterId: number,
@@ -20,5 +22,7 @@ export default async function updateAbility(
   return fetch(
     `${process.env.BACKEND_URL}/character/${characterId}/abilities`,
     putArguments
-  ).then(jsonOrError);
+  )
+    .then(jsonOrError)
+    .then(characterRevalidator(characterId));
 }

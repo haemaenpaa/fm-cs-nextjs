@@ -3,7 +3,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import UserBox from "./UserBox";
-import fetchCurrentUser from "@/data-access/user";
 
 const inter = Inter({ subsets: ["latin"] });
 
