@@ -6,7 +6,7 @@ import { authorizationHeaders } from "./auth-header";
 export default async function fetchCharacterList(): Promise<Character[]> {
   return fetch(process.env.BACKEND_URL + "/characters", {
     headers: await authorizationHeaders(),
-    next: { revalidate: false },
+    next: { revalidate: 1 },
   })
     .then((res) => res.json())
     .then((dtos: CharacterDto[]) => dtos.map(convertCharacterDto));

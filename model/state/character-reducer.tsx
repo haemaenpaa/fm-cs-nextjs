@@ -1,8 +1,15 @@
+import { rename } from "fs";
 import Character from "../character";
 import { Skill } from "../skill";
 
 export interface CharacterAction {
-  type: "useFetched" | "ability" | "skill" | "addSkill" | "removeSkill"; //Type of the action
+  type:
+    | "useFetched"
+    | "ability"
+    | "skill"
+    | "addSkill"
+    | "removeSkill"
+    | "rename"; //Type of the action
   specifier: string; //Specific target of the action, e.g. skill ID
   numericValue?: number; //Number value of the action
   stringValue?: string;
@@ -70,6 +77,8 @@ export function reduceCharacter(
           (s) => s.identifier !== action.specifier
         ),
       };
+    case "rename":
+      return { ...current, name: action.stringValue! };
     default:
       console.error(`Action type ${action.type} not recognized`);
       return current;

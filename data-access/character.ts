@@ -4,12 +4,12 @@ import {
   convertCharacterModel,
 } from "@/model/mapper/character-mapper";
 import { authorizationHeaders } from "./auth-header";
-import { revalidateTag } from "next/cache";
+import { characterRevalidator } from "./characterRevalidator";
 
 export default async function fetchCharacter(id: number): Promise<Character> {
   return fetch(process.env.BACKEND_URL + `/character/${id}`, {
     headers: await authorizationHeaders(),
-    next: { revalidate: 15, tags: [`character:${id}`] },
+    next: { revalidate: 60, tags: [`character:${id}`] },
   })
     .then((res) => res.json())
     .then(convertCharacterDto);
@@ -27,9 +27,19 @@ export async function createCharacter(
     },
   })
     .then((res) => res.json())
-    .then((o) => {
-      revalidateTag(`character:${character.id}`);
-      return o;
-    })
+    .then(convertCharacterDto);
+}
+
+export async function renameCharacter(characterId: number, name: string) {
+  return fetch(process.env.BACKEND_URL + `/character/${characterId}`, {
+    method: "PUT",
+    body: JSON.stringify({ name }),
+    headers: {
+      ...(await authorizationHeaders()),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then(characterRevalidator(characterId))
     .then(convertCharacterDto);
 }

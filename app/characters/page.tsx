@@ -9,13 +9,15 @@ export default withPageAuthRequired(
     return (
       <ul>
         {characters.map((c) => (
-          <p>
+          <li key={c.id}>
             <Link href={`/characters/${c.id}`}>
-              {c.id} - {c.name}, {c.biography?.concept}
+              {c.name}, {c.biography?.concept}
             </Link>
-          </p>
+          </li>
         ))}
-        <AddCharacterButton></AddCharacterButton>
+        <li key="new">
+          <AddCharacterButton></AddCharacterButton>
+        </li>
       </ul>
     );
   },

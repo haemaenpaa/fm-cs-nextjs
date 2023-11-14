@@ -1,5 +1,6 @@
 "use client";
 import AbilityGrid from "@/components/ability/AbilityGrid";
+import { CharacterDetails } from "@/components/character-detail/CharacterDetails";
 import SkillGrid from "@/components/skill/SkillGrid";
 import Character, { getSkill } from "@/model/character";
 import { randomId } from "@/model/id-generator";
@@ -120,6 +121,26 @@ export default function CharacterSheet() {
     [character, params.id]
   );
 
+  const onRename = useCallback(
+    (name: string) => {
+      const oldName = character.name;
+      const onError = (e: any) => {
+        console.error("Failed to update skill", e);
+        dispatch({
+          type: "rename",
+          specifier: "",
+          stringValue: oldName,
+        });
+      };
+      fetch(`/api/characters/${params.id}/name`, {
+        method: "PUT",
+        body: name,
+      }).catch(onError);
+      dispatch({ type: "rename", specifier: "", stringValue: name });
+    },
+    [character?.name, params.id]
+  );
+
   useEffect(() => {
     fetch(`/api/characters/${params.id}`)
       .then((res) => res.json())
@@ -140,7 +161,7 @@ export default function CharacterSheet() {
   return (
     <CharacterContext character={character}>
       <section>
-        <p>{character.name}</p>
+        <CharacterDetails character={character} onRename={onRename} />
         <div style={{ width: "40vw" }}>
           <AbilityGrid
             abilities={character.abilities}
